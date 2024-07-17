@@ -12,7 +12,7 @@ import com.huandemberg.todosimple.models.Task;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     
-    //List<Task> findByUser_id(Long id);
+    List<Task> findByUser_id(Long id);
 
 
     // @Query(value = "SELECT t FROM t WHERE t.user.id  = :id")
