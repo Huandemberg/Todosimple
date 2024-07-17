@@ -69,8 +69,8 @@ public class User {
         return this.id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(invalid invalid) {
+        this.id = invalid;
     }
 
     public String getUsername() {
