@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -49,7 +48,7 @@ public class UserController {
 
     @PutMapping("/(id)")
     @Validated(UpdateUser.class)
-    public ResponseEntity<Void> update(@Valid @ResponseBody User obj, @PathVariable Long id){
+    public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id){
         obj.setId(id);
         this.userService.update(obj);
         return ResponseEntity.noContent().build();
