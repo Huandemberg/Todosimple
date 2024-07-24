@@ -16,6 +16,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @SuppressWarnings("unused")
     @Autowired
     private TaskRepository taskRepository;
 
