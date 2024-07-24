@@ -28,7 +28,7 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/(id)")
+    @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
         Task obj = this.taskService.findById(id);
         return ResponseEntity.ok(obj);
@@ -42,7 +42,7 @@ public class TaskController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/(id)")
+    @PutMapping("/{id}")
     @Validated
     public ResponseEntity<Void> update(@Valid @RequestBody Task obj, @PathVariable Long id) {
 
@@ -56,7 +56,7 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/(userId)")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> findAllByuserId(@PathVariable Long userId) {
         List<Task> objs = this.taskService.findAllByUserId(userId);
         return ResponseEntity.ok().body(objs);

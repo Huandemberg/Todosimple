@@ -30,7 +30,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/(id)")
+    @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
 
         User obj = this.userService.findById(id);
@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/(id)")
+    @PutMapping("/{id}")
     @Validated(UpdateUser.class)
     public ResponseEntity<Void> update(@Valid @RequestBody User obj, @PathVariable Long id){
         obj.setId(id);
@@ -54,7 +54,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/(id)")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.userService.delete(id);
         return ResponseEntity.noContent().build();
