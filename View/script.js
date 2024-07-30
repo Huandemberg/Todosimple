@@ -18,9 +18,9 @@ function show(tasks) {
 
             <tr>
                 <td scope="row">${task.id}</td>
-                <td">${task.description}</td>
-                <td">${task.user.username}</td>
-                <td">${task.user.id}</td>
+                <td>${task.description}</td>
+                <td>${task.user.username}</td>
+                <td>${task.user.id}</td>
             </tr>
 
         `;  
