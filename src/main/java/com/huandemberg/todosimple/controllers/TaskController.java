@@ -19,39 +19,42 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.huandemberg.todosimple.models.Task;
+import com.huandemberg.todosimple.models.projection.TaskProjection;
 import com.huandemberg.todosimple.services.TaskService;
-import com.huandemberg.todosimple.services.UserService;
+
 
 @RestController
 @RequestMapping("/task")
 @Validated
 public class TaskController {
-    
+
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private UserService usersService;
-
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
-        
         Task obj = this.taskService.findById(id);
         return ResponseEntity.ok(obj);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<TaskProjection>> findAllByUser() {
+        List<TaskProjection> objs = this.taskService.findAllByUser();
+        return ResponseEntity.ok().body(objs);
     }
 
     @PostMapping
     @Validated
     public ResponseEntity<Void> create(@Valid @RequestBody Task obj) {
         this.taskService.create(obj);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/(id)").buildAndExpand(obj.getId()).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
     @Validated
     public ResponseEntity<Void> update(@Valid @RequestBody Task obj, @PathVariable Long id) {
-
         obj.setId(id);
         this.taskService.update(obj);
         return ResponseEntity.noContent().build();
@@ -63,10 +66,4 @@ public class TaskController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Task>> findAllByuserId(@PathVariable Long userId) {
-        this.usersService.findById(userId);
-        List<Task> objs = this.taskService.findAllByUserId(userId);
-        return ResponseEntity.ok().body(objs);
-    }
 }
