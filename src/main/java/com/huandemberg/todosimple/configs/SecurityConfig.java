@@ -9,8 +9,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,16 +27,18 @@ import com.huandemberg.todosimple.security.JWTUtil;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
+
+    
 
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserDetailsService userDetailsService; 
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    private  JWTUtil jwtUtil;
+    private JWTUtil jwtUtil;
 
     private static final String[] PUBLIIC_MATCHERS = {
 
@@ -52,25 +56,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors().and().csrf().disable();
+        http.cors(AbstractHttpConfigurer::disable).csrf(AbstractHttpConfigurer::disable);
 
         AuthenticationManagerBuilder authenticationManagerBuilder = http
-            .getSharedObject(AuthenticationManagerBuilder.class);
+                .getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(this.userDetailsService)
-            .passwordEncoder(bCryptPasswordEncoder());
+                .passwordEncoder(bCryptPasswordEncoder());
         this.authenticationManager = authenticationManagerBuilder.build();
-        
 
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, PUBLIIC_MATCHERS_POST).permitAll()
-                .antMatchers(PUBLIIC_MATCHERS).permitAll()
+        http.authorizeHttpRequests((authorize) -> authorize
+                .requestMatchers(HttpMethod.POST, PUBLIIC_MATCHERS_POST).permitAll()
+                .requestMatchers(PUBLIIC_MATCHERS).permitAll()
                 .anyRequest().authenticated().and()
-                .authenticationManager(authenticationManager);
+                .authenticationManager(authenticationManager));
+        
 
         http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
         http.addFilter(new JWTAuthorizationFilter(this.authenticationManager, this.jwtUtil, this.userDetailsService));
 
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement((sessions) -> sessions
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        
 
         return http.build();
 

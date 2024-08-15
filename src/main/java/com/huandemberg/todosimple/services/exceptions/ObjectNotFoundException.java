@@ -1,9 +1,11 @@
 package com.huandemberg.todosimple.services.exceptions;
 
-import javax.persistence.EntityNotFoundException;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ObjectNotFoundException extends EntityNotFoundException {
