@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -67,8 +66,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, PUBLIIC_MATCHERS_POST).permitAll()
                 .requestMatchers(PUBLIIC_MATCHERS).permitAll()
-                .anyRequest().authenticated().and()
-                .authenticationManager(authenticationManager));
+                .anyRequest().authenticated()).authenticationManager(authenticationManager);
         
 
         http.addFilter(new JWTAuthenticationFilter(this.authenticationManager, this.jwtUtil));
