@@ -129,7 +129,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler imple
                 request);
     }
 
-     @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<Object> handleAccessDeniedException(
             AccessDeniedException accessDeniedException,
