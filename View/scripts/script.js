@@ -22,6 +22,11 @@ function show(tasks) {
   document.getElementById("tasks").innerHTML = tab;
 }
 
+function logout(){
+  localStorage.clear();
+  window.location = "/view/login.html";
+}
+
 async function getTasks() {
   let key = "Authorization";
   const response = await fetch(tasksEndpoint, {

@@ -28,7 +28,7 @@ async function login() {
   
     window.setTimeout(function () {
       window.location = "/view/index.html";
-    }, 2000);
+    }, 1500);
   }
   
   function showToast(id) {
