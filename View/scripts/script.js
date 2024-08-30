@@ -15,6 +15,9 @@ function show(tasks) {
             <tr>
                 <td scope="row">${task.id}</td>
                 <td>${task.description}</td>
+                <td><button type="button" id="requestBtn2" class="btn btn-outline-dark" onclick="deleteTask(${task.id})">
+                Delete
+              </button></td>
             </tr>
         `;
   }
@@ -25,6 +28,17 @@ function show(tasks) {
 function logout(){
   localStorage.clear();
   window.location = "/view/login.html";
+}
+
+async function deleteTask(taskId){
+  let key = "Authorization";
+  const response = await fetch("http://localhost:8080/task/" + taskId , {
+    method: "DELETE",
+    headers: new Headers({
+      Authorization: localStorage.getItem(key),
+    }),
+  });
+  getTasks();
 }
 
 async function getTasks() {
